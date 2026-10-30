@@ -21,12 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.profildeveloppeur.ui.theme.ProfilDeveloppeurTheme
 
-/**
- * Composable 1 : Écran principal du profil développeur.
- *
- * Utilise un [Scaffold] pour structurer l'écran et applique le padding du Scaffold
- * (innerPadding) comme padding externe pour placer la fiche de profil.
- */
+// Écran principal avec Scaffold et innerPadding
 @Composable
 fun DeveloperProfileScreen(
     name: String,
@@ -41,7 +36,6 @@ fun DeveloperProfileScreen(
     modifier: Modifier = Modifier
 ) {
     Scaffold(modifier = modifier.fillMaxSize()) { innerPadding ->
-        // Padding externe transmis à la fiche de profil pour l'espacer des bords de l'écran
         ProfileCard(
             name = name,
             role = role,
@@ -60,12 +54,7 @@ fun DeveloperProfileScreen(
     }
 }
 
-/**
- * Composable 2 : Fiche de profil regroupant les informations du développeur.
- *
- * Reçoit un [modifier] de son parent (pour son placement et son padding externe)
- * et applique un padding interne sur sa [Column] interne pour aérer son contenu.
- */
+// Carte principale contenant les informations du profil
 @Composable
 fun ProfileCard(
     name: String,
@@ -85,13 +74,11 @@ fun ProfileCard(
         tonalElevation = 2.dp,
         color = MaterialTheme.colorScheme.surface
     ) {
-        // Padding interne : espace le contenu intérieur par rapport aux bords de la Surface
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            // En-tête du profil
             ProfileHeader(
                 name = name,
                 role = role,
@@ -99,7 +86,6 @@ fun ProfileCard(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // Section des compétences
             Text(
                 text = "Compétences clés",
                 style = MaterialTheme.typography.titleSmall,
@@ -117,7 +103,6 @@ fun ProfileCard(
                 )
             }
 
-            // Statut de disponibilité interactif et accessible
             AvailabilityBadge(
                 availability = availability,
                 isAvailable = isAvailable,
@@ -127,7 +112,6 @@ fun ProfileCard(
                     .padding(top = 12.dp, bottom = 8.dp)
             )
 
-            // Bouton d'action principal
             ProfileAction(
                 buttonText = actionButtonText,
                 onActionClick = onActionClick,
@@ -139,9 +123,7 @@ fun ProfileCard(
     }
 }
 
-/**
- * Composable 3 : En-tête affichant le nom, le rôle et la biographie.
- */
+// En-tête avec nom, rôle et description
 @Composable
 fun ProfileHeader(
     name: String,
@@ -172,9 +154,7 @@ fun ProfileHeader(
     }
 }
 
-/**
- * Composable 4 : Élément réutilisable représentant une compétence.
- */
+// Badge pour une compétence
 @Composable
 fun SkillItem(
     skill: String,
@@ -194,13 +174,7 @@ fun SkillItem(
     }
 }
 
-/**
- * Composable 5 : Zone interactive personnalisée affichant la disponibilité.
- *
- * Utilise un chaînage de modifiers complet avec sémantique d'accessibilité :
- * - [Modifier.semantics] configure le rôle [Role.Button] et une description pour lecteur d'écran.
- * - [Modifier.clickable] permet d'interagir avec la zone sans logique interne figée.
- */
+// Zone cliquable personnalisée pour la disponibilité
 @Composable
 fun AvailabilityBadge(
     availability: String,
@@ -220,7 +194,6 @@ fun AvailabilityBadge(
         MaterialTheme.colorScheme.onSecondaryContainer
     }
 
-    // Chaînage de modifiers : largeur, sémantique d'accessibilité, clic et padding
     Surface(
         modifier = modifier
             .semantics {
@@ -241,11 +214,7 @@ fun AvailabilityBadge(
     }
 }
 
-/**
- * Composable 6 : Action utilisateur principale avec un [Button] standard.
- *
- * Reçoit le texte et le callback d'action en paramètre.
- */
+// Bouton d'action principal
 @Composable
 fun ProfileAction(
     buttonText: String,
@@ -260,13 +229,7 @@ fun ProfileAction(
     }
 }
 
-// =============================================================================
-// PREVIEWS
-// =============================================================================
-
-/**
- * Preview 1 : Profil Développeur Android Junior (en recherche de stage/alternance).
- */
+// Previews
 @Preview(showBackground = true, name = "Profil Android Junior - Disponible")
 @Composable
 fun PreviewDeveloperProfileJunior() {
@@ -285,18 +248,15 @@ fun PreviewDeveloperProfileJunior() {
             isAvailable = true,
             actionButtonText = "Contacter par email",
             onActionClick = {
-                // Signalement de l'action sans logique applicative complexe
+                // Clic contacter
             },
             onAvailabilityClick = {
-                // Signalement du clic sur la disponibilité
+                // Clic statut
             }
         )
     }
 }
 
-/**
- * Preview 2 : Profil Développeuse Full-Stack Senior / Freelance (actuellement en mission).
- */
 @Preview(showBackground = true, name = "Profil Développeuse Senior - En mission")
 @Composable
 fun PreviewDeveloperProfileSenior() {
@@ -315,10 +275,10 @@ fun PreviewDeveloperProfileSenior() {
             isAvailable = false,
             actionButtonText = "Voir le portfolio",
             onActionClick = {
-                // Callback d'action
+                // Clic portfolio
             },
             onAvailabilityClick = {
-                // Callback sur la zone de disponibilité
+                // Clic statut
             }
         )
     }

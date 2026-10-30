@@ -45,9 +45,8 @@ kotlin {
 dependencies {
   val composeBom = platform(libs.androidx.compose.bom)
   implementation(composeBom)
-  androidTestImplementation(composeBom)
 
-  // Core Android dependencies
+  // Core Android
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.lifecycle.runtime.ktx)
   implementation(libs.androidx.activity.compose)
@@ -59,10 +58,4 @@ dependencies {
 
   // Tooling
   debugImplementation(libs.androidx.compose.ui.tooling)
-  // Instrumented tests
-  androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-  debugImplementation(libs.androidx.compose.ui.test.manifest)
-
-  // Local tests
-  testImplementation(libs.junit)
 }

@@ -1,81 +1,65 @@
 # Profil Développeur Compose
 
-## 1. Titre du projet
-**Fiche « Profil développeur » avec Jetpack Compose**
+## Description
+Cette application Android réalisée avec Jetpack Compose affiche une fiche de « Profil développeur ». 
+L'écran présente les informations essentielles d'un profil technique : nom, poste, courte présentation, liste de compétences, statut de disponibilité et bouton de contact. 
+L'interface est découpée en plusieurs composants réutilisables qui reçoivent leurs données et leurs actions en paramètres.
 
----
+## Notions utilisées
+- **Fonctions composables (`@Composable`)** : découpage de l'interface en sous-composants clairs.
+- **Paramètres** : passage des données (textes, liste, booléen) pour éviter les valeurs en dur.
+- **Modifiers & chaînage** : gestion de la largeur (`fillMaxWidth`), des espacements (`padding`), du clic (`clickable`) et de l'accessibilité.
+- **Padding externe et interne** : distinction entre le placement d'un composant par son parent et l'espacement de son contenu interne.
+- **Callbacks** : gestion des clics via des fonctions passées en paramètres (`() -> Unit`).
+- **Accessibilité de base (`semantics`)** : utilisation de `Role.Button` et `contentDescription` sur une zone cliquable personnalisée.
+- **Structure Compose** : `MainActivity`, `setContent`, `Scaffold` (`innerPadding`), `Surface`, `Column`, `Button`, `Text`.
+- **Previews (`@Preview`)** : deux previews illustrant deux profils différents (disponible / en mission).
 
-## 2. Description courte
-Cet écran Android réalisé avec Jetpack Compose présente une fiche complète de profil développeur. Il affiche de manière hiérarchisée l'identité du profil (nom, rôle professionnel, courte biographie), une liste de compétences techniques clés, un statut interactif de disponibilité ainsi qu'un bouton d'action principal. L'écran est conçu selon les principes modernes de Compose : découpage en composants réutilisables et sans état (stateless), gestion claire des modificateurs et respect des standards d'accessibilité.
-
----
-
-## 3. Notions utilisées
-- **Fonctions composables (`@Composable`)** : découpage modulaire de l'interface en petits composants spécialisés.
-- **Paramètres & Découplage** : tous les composants reçoivent leurs données en paramètres pour garantir leur réutilisabilité.
-- **Modifiers & Chaînage de modifiers** : contrôle précis des dimensions, de l'espacement, du comportement au clic et de la sémantique.
-- **Padding externe vs padding interne** : séparation nette entre le placement imposé par le parent et l'aération interne des composants.
-- **Callbacks & Unidirectional Data Flow** : remontée des événements utilisateur sans logique métier figée dans les composants.
-- **Accessibilité de base (`semantics`)** : ajout de rôles d'accessibilité (`Role.Button`) et de descriptions textuelles (`contentDescription`) pour les lecteurs d'écran (TalkBack).
-- **Structure Android & Conteneurs** : `MainActivity`, `setContent`, `Scaffold`, `innerPadding`, `Surface`, `Column`.
-- **Previews Compose (`@Preview`)** : visualisation instantanée de deux variantes différentes de profils directement dans l'environnement de développement.
-
----
-
-## 4. Explication courte
+## Questions / Réponses
 
 ### 1. Quels composables avez-vous créés ?
-Nous avons créé six fonctions composables complémentaires :
-1. `DeveloperProfileScreen` : composable représentant l'écran global qui intègre le `Scaffold` et gère les insets système (`innerPadding`).
-2. `ProfileCard` : conteneur de type `Surface` représentant la fiche de profil et regroupant l'ensemble des sections d'informations.
-3. `ProfileHeader` : composable dédié à l'en-tête du profil (nom du développeur, intitulé de poste / rôle et résumé biographique).
-4. `SkillItem` : composable unitaire réutilisable affichant une compétence technique sous la forme d'un badge élégant.
-5. `AvailabilityBadge` : zone interactive personnalisée affichant la disponibilité ou les modalités de contact avec sémantique d'accessibilité.
-6. `ProfileAction` : composable réutilisable encapsulant le bouton d'action principal (`Button`).
+J'ai découpé l'interface en 6 composables :
+- `DeveloperProfileScreen` : l'écran principal qui contient le `Scaffold`.
+- `ProfileCard` : la carte (`Surface`) qui regroupe toutes les informations du profil.
+- `ProfileHeader` : l'en-tête avec le nom, le rôle et la description.
+- `SkillItem` : un composant représentant une compétence de la liste.
+- `AvailabilityBadge` : une zone cliquable personnalisée indiquant la disponibilité.
+- `ProfileAction` : le composant contenant le `Button` d'action principal.
 
 ### 2. Quel composable représente l’écran principal ?
-Le composable `DeveloperProfileScreen` représente l'écran principal. Il intègre le conteneur structurel `Scaffold`, calcule le padding d'affichage global via `innerPadding` et accueille la fiche `ProfileCard`.
+C'est `DeveloperProfileScreen`. Il met en place le `Scaffold` sur tout l'écran et passe le `innerPadding` à la fiche `ProfileCard`.
 
 ### 3. Où utilisez-vous un padding externe ?
-Un padding externe est appliqué par le composant parent pour définir l'espacement et la position d'un composant enfant par rapport à son environnement extérieur :
-- **Sur la carte de profil (`ProfileCard`)** : dans `DeveloperProfileScreen`, la carte reçoit `Modifier.padding(innerPadding).padding(16.dp)`, ce qui l'espace des bords de l'écran et des barres système.
-- **Sur les compétences (`SkillItem`)** : chaque élément reçoit `Modifier.padding(vertical = 3.dp)` pour s'espacer des éléments voisins dans la liste.
-- **Sur les sections de la carte** : `ProfileHeader`, `AvailabilityBadge` et `ProfileAction` reçoivent des marges externes verticales (`padding(top = ...)`, `padding(bottom = ...)`) pour aérer les sections successives.
+Le padding externe est passé par le composant parent via le paramètre `modifier` pour positionner un enfant par rapport aux autres éléments :
+- Dans `DeveloperProfileScreen`, j'applique `.padding(innerPadding).padding(16.dp)` sur `ProfileCard` pour l'éloigner des bords de l'écran.
+- Dans `ProfileCard`, j'applique des paddings externes verticaux sur `SkillItem` (`padding(vertical = 3.dp)`), `AvailabilityBadge` (`padding(top = 12.dp, bottom = 8.dp)`) et `ProfileAction` (`padding(top = 8.dp)`) pour espacer les blocs entre eux.
 
 ### 4. Où utilisez-vous un padding interne ?
-Un padding interne est appliqué à l'intérieur même d'un composant pour espacer son contenu par rapport à ses propres bordures :
-- **À l'intérieur de `ProfileCard`** : la `Column` interne applique `Modifier.padding(16.dp)` sur elle-même afin que les textes, badges et boutons ne touchent pas les bords de la `Surface`.
-- **À l'intérieur de `SkillItem`** : le `Text` applique `Modifier.padding(horizontal = 12.dp, vertical = 6.dp)` pour que le libellé respire dans son conteneur.
-- **À l'intérieur de `AvailabilityBadge`** : le `Text` applique `Modifier.padding(horizontal = 12.dp, vertical = 8.dp)` pour créer une zone de frappe confortable.
+Le padding interne est défini directement à l'intérieur d'un composant pour éviter que son contenu ne colle à ses propres bordures :
+- Dans `ProfileCard`, la `Column` interne a un `.padding(16.dp)` pour laisser une marge à l'intérieur de la `Surface`.
+- Dans `SkillItem` et `AvailabilityBadge`, le `Text` interne utilise un `.padding(horizontal = 12.dp, ...)` pour aérer le texte dans son badge.
 
 ### 5. Quel composant reçoit un callback ?
-- `ProfileAction` reçoit en paramètre le callback `onActionClick: () -> Unit` déclenché lors du clic sur le `Button`.
-- `AvailabilityBadge` reçoit le callback `onClick: () -> Unit = {}` déclenché lors du clic sur la zone de disponibilité.
-- Ces callbacks sont transmis depuis `ProfileCard` et `DeveloperProfileScreen`. Le composant se contente de signaler l'événement à son parent (Event Hoisting), sans imposer de logique applicative avancée.
+- `ProfileAction` reçoit `onActionClick: () -> Unit` pour le clic sur le bouton principal.
+- `AvailabilityBadge` reçoit `onClick: () -> Unit` pour le clic sur la zone de disponibilité.
+Ces callbacks remontent jusqu'à `DeveloperProfileScreen` : les composants signalent simplement le clic sans exécuter de logique métier complexe.
 
 ### 6. Quelle information d’accessibilité avez-vous ajoutée ?
-Sur la zone interactive personnalisée `AvailabilityBadge`, nous avons ajouté le modificateur `.semantics { ... }` :
-- `role = Role.Button` : informe les technologies d'assistance (lecteurs d'écran comme TalkBack) que cet élément graphique personnalisé doit être annoncé et traité comme un bouton cliquable.
-- `contentDescription = "Statut de disponibilité : $availability. Cliquez pour interagir."` : fournit une description vocale explicite de l'état et de l'action possible.
-
-*Note comparative* : pour le composant `ProfileAction`, l'utilisation du composant standard `Button` fournit nativement cette sémantique de bouton sans nécessiter d'attribut manuel.
+Comme `AvailabilityBadge` est construit avec une `Surface` rendue cliquable (et non un `Button` natif), j'ai ajouté un bloc `.semantics` dans la chaîne de modifiers avec :
+- `role = Role.Button` pour indiquer aux lecteurs d'écran qu'il s'agit d'un élément interactif de type bouton.
+- `contentDescription` pour préciser vocalement le statut et le fait qu'on peut cliquer dessus.
+À l'inverse, `ProfileAction` utilise le composant `Button` de Material 3, qui intègre déjà nativement ce rôle et ce comportement d'accessibilité.
 
 ### 7. Pourquoi vos composants peuvent-ils être considérés comme réutilisables ?
-Nos composants sont pleinement réutilisables pour trois raisons fondamentales :
-1. **Paramétrage complet des données** : aucune donnée textuelle ou métier n'est écrite en dur dans les composants. `name`, `role`, `description`, `skills`, `availability` et les libellés de boutons sont injectés sous forme d'arguments.
-2. **Contrôle du layout par le parent (`modifier: Modifier = Modifier`)** : chaque composant accepte un paramètre `modifier` avec une valeur par défaut et l'applique à son élément racine, permettant au parent d'ajuster son placement externe, sa largeur ou son padding.
-3. **Composants sans état (Stateless) et découplés** : ils ne dépendent d'aucune logique métier fermée ou variable globale, et délèguent toutes leurs interactions via des lambdas callbacks. Ils peuvent donc être intégrés dans n'importe quel écran ou contexte applicatif.
+Ils sont réutilisables car :
+1. Ils prennent toutes leurs données en paramètres (nom, rôle, liste de compétences, texte du bouton, callbacks) au lieu d'avoir du texte figé en dur.
+2. Ils acceptent tous un paramètre `modifier: Modifier = Modifier` appliqué à leur conteneur racine, ce qui laisse le parent gérer librement leur placement.
+3. On peut facilement afficher deux profils complètement différents avec les mêmes composants, comme le montrent les deux fonctions `@Preview`.
 
----
+## Aperçu (Previews)
 
-## 5. Captures d'écran des Previews
-
-### Variante 1 : Profil Développeur Android Junior (Disponible pour alternance)
-*Montre un profil junior avec compétences Android et statut disponible en vert/bleu primaire.*
-
+### Variante 1 : Profil Junior (Disponible)
 ![Preview Profil Android Junior](screenshots/preview_junior.png)
 
-### Variante 2 : Profil Développeuse Mobile Senior (En mission)
-*Montre un profil senior / lead avec compétences cloud/multiplatform et statut en mission.*
-
+### Variante 2 : Profil Senior (En mission)
 ![Preview Profil Développeuse Senior](screenshots/preview_senior.png)

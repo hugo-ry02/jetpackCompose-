@@ -26,10 +26,10 @@ class MainActivity : ComponentActivity() {
                     isAvailable = true,
                     actionButtonText = "Contacter",
                     onActionClick = {
-                        // Événement d'action : signalement sans logique applicative complexe
+                        // Clic sur le bouton contacter
                     },
                     onAvailabilityClick = {
-                        // Événement clic sur statut
+                        // Clic sur le badge de disponibilité
                     }
                 )
             }
